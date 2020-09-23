@@ -8,7 +8,8 @@
 
 int main2() {
 
-	int i, j;
+	//int i, 
+	int j;
 	char* info;
 	size_t infoSize;
 	cl_uint platformCount;
@@ -25,7 +26,7 @@ int main2() {
 	clGetPlatformIDs(platformCount, platforms, NULL);
 
 	// for each platform print all attributes
-	for (i = 0; i < platformCount; i++) {
+	for (unsigned i = 0; i < platformCount; i++) {
 
 		printf("\n %d. Platform \n", i + 1);
 

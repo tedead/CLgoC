@@ -1,5 +1,6 @@
 ***** Detected Device Information *****
 1. Device: GeForce GT 720
+1. Device Kernels: 
 1. Device Vendor: Þ
 	1.1 Hardware version: OpenCL 1.2 CUDA
 	1.1 Compiler: 

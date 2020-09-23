@@ -1,4 +1,5 @@
 #pragma comment(lib, "OpenCL.lib")
+#define CL_TARGET_OPENCL_VERSION 220
 #define _CRT_SECURE_NO_DEPRECATE
 #define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #define CL_USE_DEPRECATED_OPENCL_1_0_APIS
@@ -7,9 +8,7 @@
 #include <fstream>
 #include <CL/cl.h>
 //#include "opencl.hpp"
-
 #define MAX_SOURCE_SIZE (0x100000)
-
 FILE *stream, *stream2;
 
 int main(void) {
@@ -39,7 +38,7 @@ int main(void) {
 	platforms_i = (cl_platform_id*)malloc(sizeof(cl_platform_id) * platformCount_i);
 	clGetPlatformIDs(platformCount_i, platforms_i, NULL);
 
-	for (int i = 0; i < platformCount_i; i++) {
+	for (unsigned int i = 0; i < platformCount_i; i++) {
 
 		// get all devices
 		clGetDeviceIDs(platforms_i[i], CL_DEVICE_TYPE_ALL, 0, NULL, &deviceCount_i);
@@ -47,7 +46,7 @@ int main(void) {
 		clGetDeviceIDs(platforms_i[i], CL_DEVICE_TYPE_ALL, deviceCount_i, devices_i, NULL);
 
 		// for each device print critical attributes
-		for (int j = 0; j < deviceCount_i; j++) {
+		for (unsigned int j = 0; j < deviceCount_i; j++) {
 
 			// print device name
 			clGetDeviceInfo(devices_i[j], CL_DEVICE_NAME, 0, NULL, &valueSize_i);
@@ -57,7 +56,12 @@ int main(void) {
 			fprintf(stream2, "%d. Device: %s\n", j + 1, value_i);
 			free(value_i);
 
-			
+			clGetDeviceInfo(devices_i[j], CL_DEVICE_BUILT_IN_KERNELS, 0, NULL, &valueSize_i);
+			value_i = (char*)malloc(valueSize_i);
+			clGetDeviceInfo(devices_i[j], CL_DEVICE_BUILT_IN_KERNELS, valueSize_i, value_i, NULL);
+			printf("%d. Device Kernels %s\n", j + 1, value_i);
+			fprintf(stream2, "%d. Device Kernels: %s\n", j + 1, value_i);
+			free(value_i);
 
 			clGetDeviceInfo(devices_i[j], CL_DEVICE_VENDOR_ID, 0, NULL, &valueSize_i);
 			value_i = (char*)malloc(valueSize_i);
@@ -162,7 +166,7 @@ int main(void) {
 	ret = clGetPlatformIDs(ret_num_platforms, platforms, NULL);
 	printf("ret at %d is %d\n", __LINE__, ret);
 
-	for (int x = 0; x < ret_num_platforms; x++) {
+	for (unsigned int x = 0; x < ret_num_platforms; x++) {
 		ret = clGetDeviceIDs(platforms[x], CL_DEVICE_TYPE_ALL, 1, &device_id, &ret_num_devices);
 		printf("ret at %d is %d\n", __LINE__, ret);
 		printf("ret at %d is %d\n", __LINE__, platforms[x]);
